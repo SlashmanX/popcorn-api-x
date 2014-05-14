@@ -39,7 +39,7 @@ function extractShowInfo(show, callback) {
         console.log("Looking for "+ show.show);
         
         
-        numSeasons = Object.keys(data).length;
+        numSeasons = Object.keys(data).length - 1;
 
         // upate with right torrent link
         if(!data.dateBased) {
