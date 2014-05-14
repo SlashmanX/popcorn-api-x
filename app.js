@@ -263,10 +263,16 @@ server.get('/shows', function(req, res) {
 
 });
 
+server.get('/shows/all', function(req, res) {
+    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
+      res.json(202, docs);
+    });
+});
+
 server.get('/shows/:page', function(req, res) {
     var page = req.params.page-1;   
     var offset = page*byPage;
-    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ year: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
     });
 });
@@ -294,7 +300,7 @@ server.get('/shows/last_updated/:page', function(req, res) {
 
 server.get('/shows/search/:search', function(req, res) {
     var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
-    db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).limit(byPage).exec(function (err, docs) {
+    db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ title: -1 }).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
     });
 });
@@ -303,7 +309,7 @@ server.get('/shows/search/:search/:page', function(req, res) {
     var page = req.params.page-1;
     var offset = page*byPage;    
     var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
-    db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+    db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
     });
 });
