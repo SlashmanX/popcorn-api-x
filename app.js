@@ -20,6 +20,9 @@ var TTL = 1000 * 60 * 60 * 24;
 // how many request by page
 var byPage = 100;
 
+// Force TZ
+process.env.TZ = "America/New_York";
+
 /*
  *  EXTRACT FUNCTIONS
  */
@@ -39,7 +42,6 @@ function extractShowInfo(show, callback) {
 
         if(!data) return callback(null, show);
         console.log("Looking for "+ show.show);
-        
         
         numSeasons = Object.keys(data).length - 1; //Subtract dateBased key
 
@@ -243,12 +245,6 @@ function refreshDatabase() {
  */
 
 server.get('/shows', function(req, res) {
-    db.tvshows.find({}).sort({ year: -1 }).limit(byPage).exec(function (err, docs) {
-      res.json(202, docs);
-    });
-});
-
-server.get('/shows/all', function(req, res) {
     
     // we get how many elements we have
     // then we return the page array
