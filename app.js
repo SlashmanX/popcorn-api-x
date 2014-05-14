@@ -254,7 +254,7 @@ server.get('/shows', function(req, res) {
       // how many page?
       var nbPage = Math.round(count / byPage);
       var docs = [];
-      for (var i = 0; i < nbPage; i++)
+      for (var i = 1; i < nbPage+1; i++)
           docs.push("shows/"+i);
                
       res.json(202, docs);
