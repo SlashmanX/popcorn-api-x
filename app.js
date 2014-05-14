@@ -18,12 +18,11 @@ var db = require('./database');
 var TTL = 1000 * 60 * 60 * 24;
 
 // how many request by page
-var byPage = 50;
+var byPage = 100;
 
 /*
  *  EXTRACT FUNCTIONS
  */
-
 
 function extractShowInfo(show, callback) {
 
@@ -260,7 +259,7 @@ server.get('/shows/all', function(req, res) {
       var nbPage = Math.round(count / byPage);
       var docs = [];
       for (var i = 0; i < nbPage; i++)
-          docs.push("/shows/"+i);
+          docs.push("shows/"+i);
                
       res.json(202, docs);
 
