@@ -17,10 +17,15 @@ var db = require('./database');
 // TTL for torrent link (24 hrs ?)
 var TTL = 1000 * 60 * 60 * 24;
 
+// how many request by page
+var byPage = 100;
+
+// Force TZ
+process.env.TZ = "America/New_York";
+
 /*
  *  EXTRACT FUNCTIONS
  */
-
 
 function extractShowInfo(show, callback) {
 
@@ -37,7 +42,6 @@ function extractShowInfo(show, callback) {
 
         if(!data) return callback(null, show);
         console.log("Looking for "+ show.show);
-        
         
         numSeasons = Object.keys(data).length - 1; //Subtract dateBased key
 
@@ -241,21 +245,26 @@ function refreshDatabase() {
  */
 
 server.get('/shows', function(req, res) {
-    var byPage = 30;
-    db.tvshows.find({}).sort({ year: -1 }).limit(byPage).exec(function (err, docs) {
-      res.json(202, docs);
-    });
-});
+    
+    // we get how many elements we have
+    // then we return the page array
 
-server.get('/shows/all', function(req, res) {
-    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ year: -1 }).exec(function (err, docs) {
+    db.tvshows.count({}, function (err, count) {
+      
+      // how many page?
+      var nbPage = Math.round(count / byPage);
+      var docs = [];
+      for (var i = 1; i < nbPage+1; i++)
+          docs.push("shows/"+i);
+               
       res.json(202, docs);
+
     });
+
 });
 
 server.get('/shows/:page', function(req, res) {
     var page = req.params.page-1;   
-    var byPage = 30;
     var offset = page*byPage;
     db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ year: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
@@ -263,7 +272,6 @@ server.get('/shows/:page', function(req, res) {
 });
 
 server.get('/shows/last_updated', function(req, res) { 
-    var byPage = 30;
     db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
     });
@@ -278,7 +286,6 @@ server.get('/shows/updated/:since', function(req, res) {
 
 server.get('/shows/last_updated/:page', function(req, res) {
     var page = req.params.page-1;   
-    var byPage = 30;
     var offset = page*byPage;
     db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
@@ -286,7 +293,6 @@ server.get('/shows/last_updated/:page', function(req, res) {
 });
 
 server.get('/shows/search/:search', function(req, res) {
-    var byPage = 30;
     var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
     db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).limit(byPage).exec(function (err, docs) {
       res.json(202, docs);
@@ -295,7 +301,6 @@ server.get('/shows/search/:search', function(req, res) {
 
 server.get('/shows/search/:search/:page', function(req, res) {
     var page = req.params.page-1;
-    var byPage = 30;
     var offset = page*byPage;    
     var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
     db.tvshows.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ last_updated: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {

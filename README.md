@@ -18,7 +18,7 @@ We automatically generate the DB on start and we resync with eztv everyday at 00
 ### Access api
 
 #### View all shows
- 	http://localhost:5000/shows
+ 	http://localhost:5000/shows (return all pages)
  	http://localhost:5000/shows/[page]
 
 #### View shows with latest updated torrent link
