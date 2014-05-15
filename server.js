@@ -14,8 +14,10 @@ server.use(restify.gzipResponse());
 server.use(restify.queryParser());
 server.use(restifyValidation.validationPlugin({errorsAsArray: false}));
 
-server.get(/\/static\/?.*/, restify.serveStatic({
-    directory: './static'
+// /db/latest.dbz will be read on static/db/latest.dbz
+//
+server.get(/\/db\/?.*/, restify.serveStatic({
+    directory: './static',
 }));
 
 restifySwagger.configure(server);
