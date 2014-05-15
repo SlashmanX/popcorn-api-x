@@ -299,9 +299,8 @@ server.get('/shows', function(req, res) {
 server.get('/shows/:page', function(req, res) {
     var page = req.params.page-1;   
     var offset = page*byPage;
-
     // support older version
-    if (page == 'all') {
+    if (req.params.page == 'all') {
 
       db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
         res.json(202, docs);
