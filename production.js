@@ -26,7 +26,7 @@ var TTL = 1000 * 60 * 60 * 24;
 var byPage = 50;
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/tv_shows');
+mongoose.connect('mongodb://localhost/popcorn_shows');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -52,7 +52,8 @@ db.once('open', function callback () {
     air_time: String,
     status: String,
     num_seasons: Number,
-    episodes: []
+    episodes: [],
+    last_updated: Number
   });
 
   var TVShow = mongoose.model('TVShow', tvshowsSchema);
@@ -209,7 +210,7 @@ db.once('open', function callback () {
                     if (!err && data) {
 
                         // ok show exist
-                        var newShow =  new TVShow ({ 
+                        var newShow =  new TVShow ({
                             _id: data.imdb_id,
                             imdb_id: data.imdb_id,
                             tvdb_id: data.tvdb_id,
@@ -226,7 +227,8 @@ db.once('open', function callback () {
                             air_day: data.air_day,
                             air_time: data.air_time,
                             status: data.status,
-                            num_seasons: 0
+                            num_seasons: 0,
+                            last_updated: 0
                         });
 
                         newShow.save(function(err, newDocs) {
