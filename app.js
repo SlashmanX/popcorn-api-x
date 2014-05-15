@@ -299,9 +299,23 @@ server.get('/shows', function(req, res) {
 server.get('/shows/:page', function(req, res) {
     var page = req.params.page-1;   
     var offset = page*byPage;
-    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
-      res.json(202, docs);
-    });
+
+    // support older version
+    if (page == 'all') {
+
+      db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
+        res.json(202, docs);
+      });  
+
+    } else {
+
+      // paging
+      db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+        res.json(202, docs);
+      });
+
+    }
+
 });
 
 
@@ -380,12 +394,6 @@ server.get('/show/:id', function(req, res) {
 });
 
 // old route (need to keep active for compatibility)
-
-server.get('/shows/all', function(req, res) {
-    db.tvshows.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
-      res.json(202, docs);
-    });
-});
 
 server.get('/shows/updated/:since', function(req, res) {
     var since = req.params.since;
