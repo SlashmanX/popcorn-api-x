@@ -26,7 +26,7 @@ var TTL = 1000 * 60 * 60 * 24;
 var byPage = 50;
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/shows');
+mongoose.connect('mongodb://localhost/tv_shows');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -35,23 +35,24 @@ db.once('open', function callback () {
   console.log("Connected to mongodb");
 
   var tvshowsSchema = mongoose.Schema({
+    _id: String,
     imdb_id: String,
     tvdb_id: String,
     title: String,
     year: String,
-    images: Array,
+    images: {},
     slug: String,
     synopsis: String,
     runtime: String,
-    rating: String,
-    genres: Array,
+    rating: {},
+    genres: [],
     country: String,
     network: String,
     air_day: String,
     air_time: String,
     status: String,
     num_seasons: Number,
-    episodes: Array
+    episodes: []
   });
 
   var TVShow = mongoose.model('TVShow', tvshowsSchema);
@@ -209,6 +210,7 @@ db.once('open', function callback () {
 
                         // ok show exist
                         var newShow =  new TVShow ({ 
+                            _id: data.imdb_id,
                             imdb_id: data.imdb_id,
                             tvdb_id: data.tvdb_id,
                             title: data.title,
