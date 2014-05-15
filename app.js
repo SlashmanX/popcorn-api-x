@@ -20,7 +20,7 @@ var zlib = require('zlib');
 var TTL = 1000 * 60 * 60 * 24;
 
 // how many request by page
-var byPage = 100;
+var byPage = 20;
 
 // Force TZ
 process.env.TZ = "America/New_York";
