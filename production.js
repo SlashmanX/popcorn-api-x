@@ -297,14 +297,15 @@ db.once('open', function callback () {
 
   function updateGzip(callback) {
   // update the gzIp
-    var AdmZip = require('adm-zip');
-    var zip = new AdmZip();
+    var gzip = zlib.createGzip();
 
     TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
       fs.writeFile("./static/db/latest.json", JSON.stringify(docs), function(err) {
+                    
+      var inp = fs.createReadStream('./static/db/latest.json');
+      var out = fs.createWriteStream('./static/db/latest.dbz');
 
-      zip.addLocalFile('./static/db/latest.json');
-      zip.writeZip('./static/db/latest.zip');
+      inp.pipe(gzip).pipe(out);                  
 
       callback(false);
 
