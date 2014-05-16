@@ -12,8 +12,7 @@
     "node-restify-validation": "*",
     "request": "*",
     "restify": "*",
-    "trakt": "0.0.6",
-    "adm-zip": "0.4.4"    
+    "trakt": "0.0.6"
   },
   "engines": {
     "node": ">=0.10.x",
