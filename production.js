@@ -21,9 +21,12 @@ var zlib = require('zlib');
 
 // TTL for torrent link (24 hrs ?)
 var TTL = 1000 * 60 * 60 * 24;
+var os = require("os");
 
 // how many request by page
 var byPage = 50;
+
+var last_sync = false;
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/popcorn_shows');
@@ -299,19 +302,25 @@ db.once('open', function callback () {
   // update the gzIp
     var gzip = zlib.createGzip();
 
+    last_sync = +new Date();
+
     TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
       fs.writeFile("./static/db/latest.json", JSON.stringify(docs), function(err) {
                     
       var inp = fs.createReadStream('./static/db/latest.json');
       var out = fs.createWriteStream('./static/db/latest.dbz');
 
-      inp.pipe(gzip).pipe(out);                  
+      inp.pipe(gzip).pipe(out);
 
       callback(false);
 
       }); 
     });
   }
+
+  server.get('/', function(req, res) {
+      res.json(202, {status: 'online', uptime: process.uptime(), last_sync: last_sync, server: os.hostname()});
+  });
 
   /*
    *  COMPLETE IMPORT
