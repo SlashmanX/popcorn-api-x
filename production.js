@@ -17,7 +17,7 @@ var trakt = new Trakt({api_key: '7b7b93f7f00f8e4b488dcb3c5baa81e1619bb074'});
 var server = require('./server');
 var providers = [eztv];
 
-var zlib = require('zlib');
+var AdmZip = require('adm-zip');
 
 // TTL for torrent link (24 hrs ?)
 var TTL = 1000 * 60 * 60 * 24;
@@ -289,7 +289,7 @@ db.once('open', function callback () {
           // 2 process? 
           async.mapLimit(allShows[0], 2, extractTrakt, function(err, results){
 
-            updateGzip(function(err) {
+            updateZip(function(err) {
               console.log("Static GZIP updated successfully");
             });
 
@@ -298,24 +298,46 @@ db.once('open', function callback () {
       });
   }
 
-  function updateGzip(callback) {
+  function updateZip(callback) {
   // update the gzIp
-    var gzip = zlib.createGzip();
+    var zip = new AdmZip();
 
     last_sync = +new Date();
 
-    TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
-      fs.writeFile("./static/db/latest.json", JSON.stringify(docs), function(err) {
-                    
-      var inp = fs.createReadStream('./static/db/latest.json');
-      var out = fs.createWriteStream('./static/db/latest.dbz');
+    TVShow.count({}, function (err, count) {
+        
+        // how many page?
+        var nbPage = Math.round(count / byPage);
+        var docs = [];
+        for (var i = 1; i < nbPage; i++)
+            docs.push(i);
 
-      inp.pipe(gzip).pipe(out);
+        async.eachSeries(docs, function(page, cb) {
 
-      callback(false);
+          var current_file = page;
+          var offset = page*byPage;
 
-      }); 
+          TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+
+            var file = "./static/db/latest_"+current_file+".json";
+            fs.writeFile(file, JSON.stringify(docs), function(err) {
+
+              zip.addLocalFile(file);
+              cb();
+
+            }); 
+
+          });
+          
+        }, function(error) {
+
+          zip.writeZip("./static/db/latest.zip");
+          callback();
+
+        });
+
     });
+
   }
 
   server.get('/', function(req, res) {
