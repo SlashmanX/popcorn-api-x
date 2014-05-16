@@ -297,15 +297,14 @@ db.once('open', function callback () {
 
   function updateGzip(callback) {
   // update the gzIp
-    var gzip = zlib.createGzip();
+    var AdmZip = require('adm-zip');
+    var zip = new AdmZip();
 
     TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
       fs.writeFile("./static/db/latest.json", JSON.stringify(docs), function(err) {
-                    
-      var inp = fs.createReadStream('./static/db/latest.json');
-      var out = fs.createWriteStream('./static/db/latest.dbz');
 
-      inp.pipe(gzip).pipe(out);                  
+      zip.addLocalFile('./static/db/latest.json');
+      zip.writeZip('./static/db/latest.zip');
 
       callback(false);
 
@@ -395,7 +394,6 @@ db.once('open', function callback () {
         res.json(202, docs);
       });
   });
-
 
   /*
    *  UNUSED ROUTE
