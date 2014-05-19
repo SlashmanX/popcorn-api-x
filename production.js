@@ -325,8 +325,8 @@ db.once('open', function callback () {
               zip.addLocalFile(file);
               cb();
 
-            }); 
-
+            });
+             
           });
           
         }, function(error) {
@@ -380,7 +380,7 @@ db.once('open', function callback () {
       } else {
 
         // paging
-        TVShow.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+        TVShow.find({num_seasons: { $gt: 0 }},{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
           res.json(202, docs);
         });
 
