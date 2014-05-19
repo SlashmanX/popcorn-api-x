@@ -370,6 +370,8 @@ db.once('open', function callback () {
   server.get('/shows/:page', function(req, res) {
       var page = req.params.page-1;   
       var offset = page*byPage;
+
+
       // support older version
       if (req.params.page == 'all') {
 
@@ -379,8 +381,38 @@ db.once('open', function callback () {
 
       } else {
 
+        var query = {num_seasons: { $gt: 0 }};
+        var sort = {"rating.votes": -1, "rating.percentage": -1}
+        // filter elements
+        var data = req.query;
+
+        if (data.keywords) {
+          var words = data.keywords.split("%20");
+          var regex = data.keywords.toLowerCase();
+          if(words.length > 1) {
+            var regex = "^";
+            for(var w in words) {
+              regex += "(?=.*\\b"+words[w].toLowerCase()+"\\b)";
+            }
+            regex += ".+";
+          }
+          query = {title: new RegExp(regex,"gi"),num_seasons: { $gt: 0 }};
+        }
+
+        if (data.sort) {
+          if(data.sort == "year") sort = {year: -1};
+          if(data.sort == "updated") sort = {last_updated: -1};
+          if(data.sort == "name") sort = {title: 1};
+        }
+
+        if(data.genre && data.genre != "All") {
+          query = {genres : data.genre,num_seasons: { $gt: 0 }}
+        }
+
+        console.log(query);
+
         // paging
-        TVShow.find({num_seasons: { $gt: 0 }},{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort({ title: -1 }).skip(offset).limit(byPage).exec(function (err, docs) {
+        TVShow.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort(sort).skip(offset).limit(byPage).exec(function (err, docs) {
           res.json(202, docs);
         });
 
