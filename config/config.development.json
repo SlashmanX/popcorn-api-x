@@ -1,0 +1,8 @@
+{
+	"baseurl":			"https://localhost",
+	"domain":			"localhost",
+	"http-port":		5000,
+	"mongodb":			"mongodb://localhost/popcorn_shows",
+	"byPage":			50,
+	"traktApiKey":		"7b7b93f7f00f8e4b488dcb3c5baa81e1619bb074" //trakt.tv api key
+}
