@@ -2,16 +2,17 @@
   "name": "poporn-api",
   "version": "0.0.1",
   "dependencies": {
-    "async": "*",
-    "cheerio": "*",
-    "cron": "*",
+    "async": "latest",
+    "cron": "latest",
     "eztv_api_x": ">=0.1.1",
     "mongoose": "^3.8.9",
-    "node-restify-swagger": "*",
-    "node-restify-validation": "*",
-    "request": "*",
-    "restify": "*",
-    "trakt": "0.0.6" 
+    "node-restify-swagger": "latest",
+    "node-restify-validation": "latest",
+    "request": "latest",
+    "cheerio": "latest",
+    "moment": "latest",
+    "restify": "latest",
+    "trakt": "0.0.6"
   },
   "engines": {
     "node": ">=0.10.x",

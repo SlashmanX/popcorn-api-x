@@ -59,7 +59,7 @@ if (cluster.isMaster) {
   // Cronjob on master
   try {
       var CronJob = require('cron').CronJob;
-      var job = new CronJob('00 00 00 * * *', function(){
+      var job = new CronJob(config.cronJobSchedule, function(){
           helpers.refreshDatabase();
         }, function () {
             // This function is executed when the job stops
@@ -81,5 +81,3 @@ if (cluster.isMaster) {
   })  
 
 }
-
-
