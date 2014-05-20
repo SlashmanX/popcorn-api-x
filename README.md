@@ -26,4 +26,4 @@ We automatically generate the DB on start and we resync with eztv everyday at 00
  	http://localhost:5000/shows/[page]
 
 #### Show detail
-  http://localhost:5000/show/[imdb_id]
+	http://localhost:5000/show/[imdb_id]
