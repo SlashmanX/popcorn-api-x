@@ -7,13 +7,11 @@
     "cron": "*",
     "eztv_api_x": ">=0.1.1",
     "mongoose": "^3.8.9",
-    "nedb": "~0.10.5",
     "node-restify-swagger": "*",
     "node-restify-validation": "*",
     "request": "*",
     "restify": "*",
-    "trakt": "0.0.6",
-    "adm-zip": "0.4.4"    
+    "trakt": "0.0.6" 
   },
   "engines": {
     "node": ">=0.10.x",
