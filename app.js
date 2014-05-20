@@ -6,12 +6,11 @@ var mongoose = require('mongoose')
 var config = require(__dirname + '/lib/environment')()
 var cluster = require('cluster');
 var numCPUs = require('os').cpus().length;
+
+var helpers = require(__dirname + '/lib/helpers')
+
 var server = restify.createServer({
-	
-	// Uncomment to enable SSL
-	/*certificate: fs.readFileSync('ssl/ssl-cert.pem'),
-	key: fs.readFileSync('ssl/ssl-key.pem'),*/
-	
+
 	name: 'popcorn-api',
 	version: '1.0.0'
 })
@@ -57,6 +56,24 @@ if (cluster.isMaster) {
     console.log('worker ' + worker.process.pid + ' died');
   });
 
+  // Cronjob on master
+  try {
+      var CronJob = require('cron').CronJob;
+      var job = new CronJob('00 00 00 * * *', function(){
+          helpers.refreshDatabase();
+        }, function () {
+            // This function is executed when the job stops
+        },
+        true
+      );
+      console.log("Cron job started");
+  } catch(ex) {
+      console.log("Cron pattern not valid");
+  }
+
+  // Strat extraction right now
+  helpers.refreshDatabase();
+
 } else {
   
   server.listen(config.httpPort, function () {
@@ -64,4 +81,5 @@ if (cluster.isMaster) {
   })  
 
 }
+
 

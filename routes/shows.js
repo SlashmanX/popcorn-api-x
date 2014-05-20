@@ -1,31 +1,32 @@
 var Show = require('../models/Show')
 
 module.exports = function(server){
-	server.get('/echo/:name', function (req, res, next) {
-		res.pjax = 'echo'
-		res.send({name: req.params.name})
-		return next()
-	})
 
-	server.get('/shows', function(req, res) {
-      
-      // we get how many elements we have
-      // then we return the page array
+    /*
+     * List all shows pages
+     */
+    server.get('/shows', function(req, res) {
+        
+        // we get how many elements we have
+        // then we return the page array
 
-      Show.count({}, function (err, count) {
-        	
-			var nbPage = Math.round(count / server.appConfig.byPage);
-        	var docs = [];
-        	for (var i = 1; i < nbPage+1; i++)
-        		docs.push("shows/"+i);
-                 
-    		res.json(202, docs);
+        Show.count({}, function (err, count) {
+          
+          var nbPage = Math.round(count / server.appConfig.byPage);
+          var docs = [];
+          for (var i = 1; i < nbPage+1; i++)
+            docs.push("shows/"+i);
+                   
+          res.json(202, docs);
 
-    	});
+        });
 
-	});
+    });
 
-  	server.get('/shows/:page', function(req, res) {
+    /*
+     * Route used in PT for listing, search and categories
+     */
+    server.get('/shows/:page', function(req, res) {
       var page = req.params.page-1;   
       var offset = page*server.appConfig.byPage;
 
@@ -68,12 +69,24 @@ module.exports = function(server){
         }
 
         // paging
-        Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort(sort).skip(offset).limit(byPage).exec(function (err, docs) {
+        Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort(sort).skip(offset).limit(server.appConfig.byPage).exec(function (err, docs) {
           res.json(202, docs);
         });
 
       }
 
-  	});	
+    });
+
+
+    /*
+     * Show detail
+     */
+    server.get('/show/:id', function(req, res) {
+        Show.find({imdb_id: req.params.id}).limit(1).exec(function (err, docs) {
+            if (docs.length > 0 ) docs = docs[0];
+            res.json(202, docs);
+        });
+    });
+
 
 }
