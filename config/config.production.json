@@ -1,8 +1,0 @@
-{
-	"baseurl":			"https://localhost",
-	"domain":			"localhost",
-	"http-port":		5000,
-	"mongodb":			"mongodb://localhost/popcorn_shows",
-	"byPage":			50,
-    "cronJobSchedule":  "00 00 3,15 * * *"
-}

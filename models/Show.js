@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-var showSchema = new Schema({
-	_id: { type: String, required: true, index: { unique: true } },
+module.exports = mongoose.model('Show', {
+    _id: { type: String, required: true, index: { unique: true } },
     imdb_id: String,
     tvdb_id: String,
     title: String,
@@ -22,5 +21,3 @@ var showSchema = new Schema({
     episodes: [],
     last_updated: Number
 });
-
-module.exports = mongoose.model('Show', showSchema);
