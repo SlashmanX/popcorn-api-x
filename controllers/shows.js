@@ -29,7 +29,7 @@ module.exports = {
     } else {
 
       var query = {num_seasons: { $gt: 0 }};
-      var sort = {"rating.votes": -1, "rating.percentage": -1}
+      var sort = {"rating.votes":  data.order, "rating.percentage":  data.order}
       // filter elements
       var data = req.query;
 
@@ -47,9 +47,9 @@ module.exports = {
       }
 
       if (data.sort) {
-        if(data.sort == "year") sort = {year: -1};
-        if(data.sort == "updated") sort = {last_updated: -1};
-        if(data.sort == "name") sort = {title: 1};
+        if(data.sort == "year") sort = {year: data.order};
+        if(data.sort == "updated") sort = {last_updated:  data.order};
+        if(data.sort == "name") sort = {title:  (data.order * -1)};
       }
 
       if(data.genre && data.genre != "All") {
