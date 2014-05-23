@@ -30,6 +30,10 @@ module.exports = {
 
       var query = {num_seasons: { $gt: 0 }};
       var data = req.query;
+      
+      if (!data.order) 
+      	data.order = -1;
+      	
       var sort = {"rating.votes":  data.order, "rating.percentage":  data.order}
       // filter elements
 
