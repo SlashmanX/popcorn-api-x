@@ -29,9 +29,9 @@ module.exports = {
     } else {
 
       var query = {num_seasons: { $gt: 0 }};
+      var data = req.query;
       var sort = {"rating.votes":  data.order, "rating.percentage":  data.order}
       // filter elements
-      var data = req.query;
 
       if (data.keywords) {
         var words = data.keywords.split("%20");
