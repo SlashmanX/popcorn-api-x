@@ -5,7 +5,7 @@ var join = require('path').join
   , bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-var config = require('../config');
+var config = require('./config');
 
 //mongoose.connect('mongodb://localhost/popcorn_shows', options);
 mongoose.connect('mongodb://' + config.dbHosts.join(',') + '/popcorn_shows', {
