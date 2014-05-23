@@ -5,7 +5,27 @@ var join = require('path').join
   , bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/popcorn_shows');
+var config = require('../config');
+
+//mongoose.connect('mongodb://localhost/popcorn_shows', options);
+mongoose.connect('mongodb://' + config.dbHosts.join(',') + '/popcorn_shows', {
+	replset: { 
+		rs_name: 'pt0', 
+		connectWithNoPrimary: true, 
+		readPreference: 'nearest', 
+		strategy: 'ping',
+		socketOptions: {
+			keepAlive: 1
+		}
+	}, 
+	server: { 
+		readPreference: 'nearest', 
+		strategy: 'ping',
+		socketOptions: {
+			keepAlive: 1
+		}
+	}
+});
 
 module.exports = function(config, app) {
 	app.use(bodyParser());
