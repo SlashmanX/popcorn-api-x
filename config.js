@@ -8,6 +8,10 @@ module.exports = {
 		'fr.ptnet',
 		'us-chi.ptnet',
 		'us-mia.ptnet',
-		'us-dal.ptnet'
+		'us-dal.ptnet',
+		'us-sjc.ptnet',
+		'za.ptnet',
+		'br.ptnet',
+		'sg.ptnet'
 	]
 }
