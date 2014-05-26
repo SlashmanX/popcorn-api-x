@@ -52,7 +52,7 @@ module.exports = {
 
       if (data.sort) {
         if(data.sort == "year") sort = {year: data.order};
-        if(data.sort == "updated") sort = {last_updated:  data.order};
+        if(data.sort == "updated") sort = {"episode.first_aired":  data.order};
         if(data.sort == "name") sort = {title:  (data.order * -1)};
       }
 
