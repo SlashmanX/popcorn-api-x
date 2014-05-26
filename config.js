@@ -13,6 +13,7 @@ module.exports = {
 		'za.ptnet',
 		'br.ptnet',
 		'sg.ptnet',
-		'uk.ptnet'
+		'uk.ptnet',
+		'ca.ptnet'
 	]
 }
