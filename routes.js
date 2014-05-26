@@ -15,4 +15,6 @@ module.exports = function(app) {
 	app.get('/shows/update/:since/:page', controllers.shows.getSincePage);
 	app.get('/shows/last_updated', controllers.shows.getLastUpdated);
 	app.get('/shows/last_updated/:page', controllers.shows.getLastUpdatedPage);
+
+	app.get('/movie/:id/rating', controllers.movies.getMovieRating);
 }
