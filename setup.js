@@ -9,6 +9,7 @@ var config = require('./config');
 
 //mongoose.connect('mongodb://localhost/popcorn_shows', options);
 mongoose.connect('mongodb://' + config.dbHosts.join(',') + '/popcorn_shows', {
+	db: { native_parser: true },
 	replset: { 
 		rs_name: 'pt0', 
 		connectWithNoPrimary: true, 
