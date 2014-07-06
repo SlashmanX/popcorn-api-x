@@ -61,7 +61,7 @@ module.exports = {
       }
 
       // paging
-      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1 }).sort(sort).skip(offset).limit(config.pageSize).exec(function (err, docs) {
+      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, num_seasons:1, last_updated:1, ratings:1 }).sort(sort).skip(offset).limit(config.pageSize).exec(function (err, docs) {
         res.json(docs);
       });
 
