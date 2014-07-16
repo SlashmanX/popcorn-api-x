@@ -43,11 +43,11 @@ module.exports = {
         if(words.length > 1) {
           var regex = "^";
           for(var w in words) {
-            regex += "(?=.*\\b"+words[w].toLowerCase()+"\\b)";
+            regex += "(?=.*\\b"+RegExp.escape(words[w].toLowerCase())+"\\b)";
           }
           regex += ".+";
         }
-        query = {title: new RegExp(RegExp.escape(regex),"gi"),num_seasons: { $gt: 0 }};
+        query = {title: new RegExp(regex,"gi"),num_seasons: { $gt: 0 }};
       }
 
       if (data.sort) {
