@@ -4,7 +4,7 @@ module.exports = {
 		res.json({
 			status: 'online', 
 			uptime: process.uptime() | 0, 
-			server: os.hostname()
+			server: 'slashmanx'
 		});
 	}
 }
