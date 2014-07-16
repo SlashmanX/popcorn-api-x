@@ -7,6 +7,10 @@ var join = require('path').join
 var mongoose = require('mongoose');
 var config = require('./config');
 
+RegExp.escape = function(text) {
+	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 //mongoose.connect('mongodb://localhost/popcorn_shows', options);
 mongoose.connect('mongodb://' + config.dbHosts.join(',') + '/popcorn_shows', {
 	db: { native_parser: true },

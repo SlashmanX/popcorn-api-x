@@ -47,7 +47,7 @@ module.exports = {
           }
           regex += ".+";
         }
-        query = {title: new RegExp(regex,"gi"),num_seasons: { $gt: 0 }};
+        query = {title: new RegExp(RegExp.escape(regex),"gi"),num_seasons: { $gt: 0 }};
       }
 
       if (data.sort) {
@@ -74,7 +74,7 @@ module.exports = {
     });
   },
   search: function(req, res) {
-    var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
+    var keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()),"gi");
     Show.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ title: -1 }).limit(config.pageSize).exec(function (err, docs) {
       res.json(docs);
     });
@@ -82,7 +82,7 @@ module.exports = {
   searchPage: function(req, res) {
     var page = req.params.page - 1;
     var offset = page * config.pageSize;    
-    var keywords = new RegExp(req.params.search.toLowerCase(),"gi");
+    var keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()),"gi");
 
     Show.find({title: keywords,num_seasons: { $gt: 0 }}).sort({ title: -1 }).skip(offset).limit(config.pageSize).exec(function (err, docs) {
       res.json(docs);
