@@ -2,10 +2,10 @@ var Show = require('../models/Show');
 var config = require('../config.js');
 
 module.exports = {
-	getShows: function(req, res) {
-		// we get how many elements we have
+  getShows: function(req, res) {
+    // we get how many elements we have
     // then we return the page array
-    Show.count({}, function (err, count) {
+    Show.count({num_seasons: { $gt: 0 }}, function (err, count) {
       var pages = Math.round(count / config.pageSize);
       var docs = [];
       
@@ -14,7 +14,7 @@ module.exports = {
                
       res.json(docs);
     });
-	},
+  },
   getPage: function(req, res) {
     var page = req.params.page - 1;   
     var offset = page * config.pageSize;
@@ -32,8 +32,8 @@ module.exports = {
       var data = req.query;
       
       if (!data.order) 
-      	data.order = -1;
-      	
+        data.order = -1;
+        
       var sort = {"rating.votes":  data.order, "rating.percentage":  data.order}
       // filter elements
 
