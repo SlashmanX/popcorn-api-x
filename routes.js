@@ -3,6 +3,7 @@ var controllers = require('./controllers/load.js');
 // Express Routing
 module.exports = function(app) {
 	app.get('/', controllers.index.getIndex);
+	app.get('/refresh', controllers.index.refreshDatabase);
 
 	app.get('/shows', controllers.shows.getShows);
 	app.get('/shows/:page', controllers.shows.getPage);
