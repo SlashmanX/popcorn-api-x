@@ -38,16 +38,16 @@ module.exports = {
       // filter elements
 
       if (data.keywords) {
-        var words = data.keywords.split("%20");
+        var words = data.keywords.split(" ");
         var regex = data.keywords.toLowerCase();
         if(words.length > 1) {
           var regex = "^";
           for(var w in words) {
-            regex += "(?=.*\\b"+words[w].toLowerCase()+"\\b)";
+            regex += "(?=.*\\b"+(words[w].toLowerCase())+"\\b)";
           }
           regex += ".+";
         }
-        query = {title: new RegExp(RegExp.escape(regex),"gi"),num_seasons: { $gt: 0 }};
+        query = {title: new RegExp(regex,"gi"),num_seasons: { $gt: 0 }};
       }
 
       if (data.sort) {
