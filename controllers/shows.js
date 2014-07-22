@@ -140,6 +140,8 @@ module.exports = {
 
 	getStats: function(req, res) {
 		var stats = {};
+		stats.numShows = 0;
+		stats.numEpisodes = 0;
 		Show.count({num_seasons: { $gt: 0 }}, function(err, count) {
 			stats.numShows = count;
 			Show.aggregate(
@@ -152,7 +154,9 @@ module.exports = {
 				if(err) {
 					console.log(err);
 				}
-				stats.numEpisodes = result[0].count;
+				if(result && result[0]) {
+					stats.numEpisodes = result[0].count;
+				}
 				res.json(stats);
 			})
 		})
