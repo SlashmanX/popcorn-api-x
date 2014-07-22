@@ -1,6 +1,7 @@
 var os = require("os");
 var helpers = require('../lib/helpers');
 var auth = require('basic-auth');
+
 module.exports = {
 	getIndex: function(req, res) {
 		res.json({
@@ -21,4 +22,5 @@ module.exports = {
 			}).send(401);
 		}
 	}
+
 }
