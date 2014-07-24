@@ -21,6 +21,20 @@ module.exports = {
 				'WWW-Authenticate': 'Basic realm="simple-admin"'
 			}).send(401);
 		}
+	},
+
+	updateDatabase: function(req, res) {
+		var user = auth(req);
+		if(user && user.name === 'Slashman X' && user.pass === 'p0pc0rnT1me'){
+			helpers.update(function(data) {
+				console.log('updated');
+			});
+			res.end('Updating');
+		} else {
+			res.set({
+				'WWW-Authenticate': 'Basic realm="simple-admin"'
+			}).send(401);
+		}
 	}
 
 }

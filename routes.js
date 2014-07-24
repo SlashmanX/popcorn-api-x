@@ -4,6 +4,7 @@ var controllers = require('./controllers/load.js');
 module.exports = function(app) {
 	app.get('/', controllers.index.getIndex);
 	app.get('/refresh', controllers.index.refreshDatabase);
+	app.get('/update', controllers.index.updateDatabase);
 	app.get('/stats', controllers.shows.getStats);
 
 	app.get('/shows', controllers.shows.getShows);

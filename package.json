@@ -14,7 +14,9 @@
     "response-time": "^1.0.0",
     "trakt": "0.0.6",
     "basic-auth": "*",
-    "winston": "*"
+    "winston": "*",
+    "zlib": "*",
+    "byline": "*"
   },
   "engines": {
     "node": ">=0.10.x",
