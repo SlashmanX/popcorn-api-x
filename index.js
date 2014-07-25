@@ -37,7 +37,7 @@ if(cluster.isMaster) {
         console.log("Cron pattern not valid");
     }
     // Start extraction right now
-    helpers.refreshDatabase();
+    helpers.update();
 
 } else {
     app.listen(config.port);

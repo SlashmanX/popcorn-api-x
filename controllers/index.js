@@ -38,19 +38,26 @@ module.exports = {
 	},
 
 	addShow: function(req, res) {
-		var show = req.query.show;
-		var slug = req.query.slug;
-		var provider = req.query.provider;
+		var user = auth(req);
+		if(user && user.name === 'Slashman X' && user.pass === 'p0pc0rnT1me'){
+			var show = req.query.show;
+			var slug = req.query.slug;
+			var provider = req.query.provider;
 
-		var obj = {
-			show: show,
-			slug: slug,
-			provider: provider
-		};
+			var obj = {
+				show: show,
+				slug: slug,
+				provider: provider
+			};
 
-		helpers.extractTrakt(obj, function(err, result) {
-			res.json(result);
-		})
+			helpers.extractTrakt(obj, function(err, result) {
+				res.json(result);
+			})
+		} else {
+			res.set({
+				'WWW-Authenticate': 'Basic realm="simple-admin"'
+			}).send(401);
+		}
 
 	},
 
