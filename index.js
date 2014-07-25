@@ -4,7 +4,6 @@ var cluster = require('cluster')
 
 // settings
 var config = require('./config.js');
-var helpers = require('./lib/helpers');
 // config
 require('./setup.js')(config, app);
 // routes
@@ -21,8 +20,8 @@ if(cluster.isMaster) {
         console.log('worker ' + worker.process.pid + ' died, spinning up another!');
         cluster.fork();
     });
-        
-    // Update the database every hour
+    var helpers = require('./lib/helpers');
+    // Update every hour
     try {
         var CronJob = require('cron').CronJob;
         var job = new CronJob(config.scrapeTime, 
@@ -38,7 +37,7 @@ if(cluster.isMaster) {
         console.log("Cron pattern not valid");
     }
     // Start extraction right now
-    helpers.update();
+    helpers.refreshDatabase();
 
 } else {
     app.listen(config.port);

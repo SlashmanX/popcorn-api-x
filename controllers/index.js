@@ -35,6 +35,23 @@ module.exports = {
 				'WWW-Authenticate': 'Basic realm="simple-admin"'
 			}).send(401);
 		}
-	}
+	},
+
+	addShow: function(req, res) {
+		var show = req.query.show;
+		var slug = req.query.slug;
+		var provider = req.query.provider;
+
+		var obj = {
+			show: show,
+			slug: slug,
+			provider: provider
+		};
+
+		helpers.extractTrakt(obj, function(err, result) {
+			res.json(result);
+		})
+
+	},
 
 }

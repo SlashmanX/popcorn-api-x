@@ -1,5 +1,6 @@
 var Show = require('../models/Show');
 var config = require('../config.js');
+var helpers = require('../lib/helpers');
 
 module.exports = {
 
