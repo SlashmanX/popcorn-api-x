@@ -8,6 +8,7 @@ module.exports = function(app) {
 	app.get('/stats', controllers.shows.getStats);
 
 	app.get('/shows', controllers.shows.getShows);
+	app.get('/shows/genres', controllers.shows.getGenres);
 	app.get('/shows/:page', controllers.shows.getPage);
 	app.get('/show/add', controllers.index.addShow);
 	app.get('/show/:id', controllers.shows.getShow);
