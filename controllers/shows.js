@@ -166,22 +166,11 @@ module.exports = {
 
 	getGenres: function(req, res) {
 		var genres = [];
-		Show.find({}, {genres: 1}, function(err, result) {
-			async.eachSeries(result,
-			function(r, cb) {
-				async.each(r.genres, function(g, cb1) {
-					if(genres.indexOf(g) === -1) {
-						genres.push(g);
-					}	
-					cb1();
-				},
-				function(err, resultss) {
-					cb();
-				})
-			},
-			function(err1, resultes) {
-				res.json(genres);
-			})
+		Show.distinct('genres', function(err, result) {
+			for(var r in result) {
+				genres.push(result[r]);
+			}
+			res.json(genres.sort());
 		})
 	}
 }
