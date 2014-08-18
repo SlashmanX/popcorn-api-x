@@ -26,7 +26,7 @@ if(cluster.isMaster) {
         var CronJob = require('cron').CronJob;
         var job = new CronJob(config.scrapeTime, 
             function(){
-                helpers.update();
+                //helpers.update();
             }, function () {
                 // This function is executed when the job stops
             },
@@ -37,7 +37,7 @@ if(cluster.isMaster) {
         console.log("Cron pattern not valid");
     }
     // Start extraction right now
-    helpers.update();
+    //helpers.update();
 
 } else {
     app.listen(config.port);
